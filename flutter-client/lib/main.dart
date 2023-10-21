@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text('Current time:'),
-                Text(f4.format(year)+'-'+f2.format(month)+'-'+f2.format(day)+' '+f2.format(hour)+':'+f2.format(minute)+':'+f2.format(second)+'.'+f3.format(millisecond),
+                Text('${f4.format(year)}-${f2.format(month)}-${f2.format(day)} ${f2.format(hour)}:${f2.format(minute)}:${f2.format(second)}.${f3.format(millisecond)}',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
