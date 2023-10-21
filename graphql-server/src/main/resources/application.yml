@@ -18,5 +18,5 @@ spring:
 logging:
   level:
     root: INFO
-    graphql : TRACE
-#    notprivacysafe : OFF
+    graphql : INFO
+    notprivacysafe : OFF

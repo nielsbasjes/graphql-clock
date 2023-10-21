@@ -1,9 +1,28 @@
 type Query {
     " Get the current timestamp "
-    now: String
+    now: Time
 }
 
 type Subscription {
-    " Get the current timestamp "
-    now: String
+    " Get the current timestamp (refreshed approximately every second) "
+    now: Time
+}
+
+type Time {
+    " The current year "
+    year: Int
+    " The current month number "
+    month: Int
+    " The current day of the month "
+    day: Int
+    " The current hour in UTC "
+    hour: Int
+    " The current minute in UTC "
+    minute: Int
+    " The current second in UTC "
+    second: Int
+    " The current millisecond in UTC "
+    millisecond: Int
+    " The current date time as an ISO formatted string "
+    iso: String
 }

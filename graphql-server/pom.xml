@@ -16,8 +16,12 @@
     <description>This is a trivial GraphQL service intended for testing and experimenting with the various GraphQL concepts.</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
-        <main.class>nl.basjes.timer.TheApplication</main.class>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+
+        <main.class>nl.basjes.timer.TheClockApplication</main.class>
 
         <!-- Needed to make the build reproducible https://reproducible-builds.org/ -->
         <project.build.outputTimestamp>2023-10-10T10:10:10Z</project.build.outputTimestamp>
