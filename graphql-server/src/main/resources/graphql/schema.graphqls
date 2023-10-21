@@ -1,0 +1,9 @@
+type Query {
+    " Get the current timestamp "
+    now: String
+}
+
+type Subscription {
+    " Get the current timestamp "
+    now: String
+}

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>nl.basjes.timer</groupId>
+    <artifactId>graphql-timer</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <description>This is a trivial GraphQL service intended for testing and experimenting with the various GraphQL concepts.</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <main.class>nl.basjes.timer.TheApplication</main.class>
+
+        <!-- Needed to make the build reproducible https://reproducible-builds.org/ -->
+        <project.build.outputTimestamp>2023-10-10T10:10:10Z</project.build.outputTimestamp>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-graphql</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.26</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.graphql-java</groupId>
+            <artifactId>graphiql-spring-boot-starter</artifactId>
+            <version>5.0.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.graphql-java</groupId>
+                    <artifactId>graphql-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <webResources>
+                        <!-- in order to interpolate version and main class from pom into {appengine-,}web.xml -->
+                        <resource>
+                            <directory>${project.basedir}/src/main/webapp/WEB-INF</directory>
+                            <filtering>true</filtering>
+                            <targetPath>WEB-INF</targetPath>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+
+
+            <!-- Documentation: https://dmp.fabric8.io/ -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.43.0</version>
+
+                <configuration>
+                    <follow>false</follow>
+                    <images>
+                        <image>
+                            <name>docker.basjes.nl/graphql-timer:${project.version}</name>
+                            <build>
+                                <maintainer>Niels Basjes</maintainer>
+                                <from>openjdk:17-slim</from>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+
+                                <labels>
+                                    <name>graphql-timer</name>
+                                    <org.opencontainers.image.created>${maven.build.timestamp}</org.opencontainers.image.created>
+                                    <org.opencontainers.image.authors>Niels Basjes</org.opencontainers.image.authors>
+<!--                                    <org.opencontainers.image.url>https://niels.basjes.nl</org.opencontainers.image.url>-->
+<!--                                    <org.opencontainers.image.documentation>https://yauaa.basjes.nl</org.opencontainers.image.documentation>-->
+                                    <org.opencontainers.image.source>https://github.com/nielsbasjes/yauaa</org.opencontainers.image.source>
+                                    <org.opencontainers.image.version>${project.version}</org.opencontainers.image.version>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <org.opencontainers.image.revision>${git.commit.id}</org.opencontainers.image.revision>
+                                    <org.opencontainers.image.vendor>Niels Basjes</org.opencontainers.image.vendor>
+                                    <org.opencontainers.image.licenses>Apache-2.0</org.opencontainers.image.licenses>
+                                    <org.opencontainers.image.title>A trivial GraphQL service</org.opencontainers.image.title>
+                                    <org.opencontainers.image.description>${project.description}</org.opencontainers.image.description>
+                                </labels>
+                                <assembly>
+                                    <name>${project.build.finalName}.war</name>
+                                    <targetDir>/</targetDir>
+                                    <mode>dir</mode>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                                <entryPoint>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <arg>-Djava.security.egd=file:/dev/./urandom</arg>
+                                        <arg>-jar</arg>
+                                        <arg>/${project.build.finalName}.war</arg>
+                                    </exec>
+                                </entryPoint>
+                            </build>
+
+                            <run>
+                                <containerNamePattern>graphql-epoch-%i</containerNamePattern>
+                                <ports>
+                                    <port>8080:8080</port>
+                                </ports>
+                                <log>
+                                    <prefix>[ LOCAL TEST OF GRAPHQL ]::</prefix>
+                                    <color>yellow</color>
+                                </log>
+                            </run>
+                        </image>
+
+                    </images>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>build-docker</id>
+                        <configuration>
+                            <removeMode>build</removeMode>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>stop</goal>
+                            <goal>remove</goal>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
