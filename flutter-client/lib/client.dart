@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-ValueNotifier<GraphQLClient> getGraphQLCLient() {
+GraphQLClient getGraphQLCLient() {
   const String baseLink = 'epoch.klokko.nl/graphql';
   // const String _token = "Dummy value";
 
@@ -27,11 +27,10 @@ ValueNotifier<GraphQLClient> getGraphQLCLient() {
 
   final Link link = Link.split((request) => request.isSubscription, websocketLink, httpLink);
 
-   return ValueNotifier(
+   return
     GraphQLClient(
       link: link,
       cache: GraphQLCache(), // The default store is the InMemoryStore, which does NOT persist to disk
-    ),
-  );
+    );
 
 }
