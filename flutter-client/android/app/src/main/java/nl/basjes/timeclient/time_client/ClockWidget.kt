@@ -50,7 +50,7 @@ class ClockWidget : HomeWidgetProvider() {
 
         // Pending intent to update counter on button click
         val updateWidgetValuesIntent = HomeWidgetBackgroundIntent.getBroadcast(context,
-                Uri.parse("myAppWidget://updateWidgetValues"))
+                Uri.parse("myAppWidget://updatewidgetvalues"))
         views.setOnClickPendingIntent(R.id.refresh, updateWidgetValuesIntent)
 
         // Instruct the widget manager to update the widget

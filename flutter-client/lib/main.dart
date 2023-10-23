@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:time_client/AppWidget.dart';
 
 import 'client.dart';
 
@@ -9,8 +10,7 @@ late GraphQLClient gqlClient;
 
 void main() {
   gqlClient = getGraphQLCLient();
-  WidgetsFlutterBinding.ensureInitialized();
-  HomeWidget.registerBackgroundCallback(backgroundCallback);
+  initializeAppHomeWidget(gqlClient);
   runApp(const MyApp());
 }
 
@@ -70,15 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
     ''',
   );
 
-  @override
-  void initState() {
-    super.initState();
-
-    // Set the group ID
-    HomeWidget.setAppGroupId(appGroupId);
-
-    updateWidget(null);
-  }
+  var f2 = NumberFormat("00", "en_US");
+  var f3 = NumberFormat("000", "en_US");
+  var f4 = NumberFormat("0000", "en_US");
 
   @override
   Widget build(BuildContext context) {
@@ -140,75 +134,4 @@ class _MyHomePageState extends State<MyHomePage> {
     )
     );
   }
-}
-
-
-// Called when Doing Background Work initiated from Widget
-@pragma('vm:entry-point')
-Future<void> backgroundCallback(Uri? uri) async {
-  print('Received URI: $uri');
-
-  if (uri?.host == 'updateWidgetValues') {
-    final queryDocument = gql(
-      r'''
-      query {
-        now {
-          year
-          month
-          day
-          hour
-          minute
-          second
-          millisecond
-          iso
-        }
-      }
-    ''',
-    );
-
-    var queryResult = await gqlClient.query(QueryOptions(document: queryDocument));
-    print(queryResult.toString());
-    if (queryResult.hasException) {
-      updateWidget(null);
-    } else {
-      updateWidget(queryResult.data);
-    }
-  }
-}
-
-var f2 = NumberFormat("00", "en_US");
-var f3 = NumberFormat("000", "en_US");
-var f4 = NumberFormat("0000", "en_US");
-
-const String appGroupId = '<YOUR APP GROUP>';
-
-// These are CLASS names!
-const String iOSWidgetName = 'ClockWidgets';
-const String androidWidgetName = 'ClockWidget';
-
-void updateWidget(var payload) {
-  if (payload != null) {
-    int year = payload['year'];
-    int month = payload['month'];
-    int day = payload['day'];
-    int hour = payload['hour'];
-    int minute = payload['minute'];
-    int second = payload['second'];
-    int millisecond = payload['millisecond'];
-    String iso = payload['iso'];
-
-    String date = '${f4.format(year)}-${f2.format(month)}-${f2.format(day)}';
-    String time = '${f2.format(hour)}:${f2.format(minute)}:${f2.format(
-        second)}.${f3.format(millisecond)}';
-
-    HomeWidget.saveWidgetData<String>('date', date);
-    HomeWidget.saveWidgetData<String>('time', time);
-  } else {
-    HomeWidget.saveWidgetData<String>('date', 'No Date');
-    HomeWidget.saveWidgetData<String>('time', 'No Time');
-  }
-  HomeWidget.updateWidget(
-    iOSName: iOSWidgetName,
-    androidName: androidWidgetName,
-  );
 }

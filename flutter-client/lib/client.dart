@@ -31,6 +31,13 @@ GraphQLClient getGraphQLCLient() {
     GraphQLClient(
       link: link,
       cache: GraphQLCache(), // The default store is the InMemoryStore, which does NOT persist to disk
+      defaultPolicies: DefaultPolicies(
+        query: Policies(
+          fetch: FetchPolicy.networkOnly,
+          error: ErrorPolicy.none,
+          cacheReread: CacheRereadPolicy.ignoreAll,
+        )
+      ),
     );
 
 }
