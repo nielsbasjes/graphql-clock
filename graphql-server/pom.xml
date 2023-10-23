@@ -11,7 +11,7 @@
     <groupId>nl.basjes.timer</groupId>
     <artifactId>graphql-timer</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+<!--    <packaging>jar</packaging>-->
 
     <description>This is a trivial GraphQL service intended for testing and experimenting with the various GraphQL concepts.</description>
 
@@ -50,15 +50,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
         </dependency>
 
         <dependency>
@@ -91,23 +86,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <webResources>
-                        <!-- in order to interpolate version and main class from pom into {appengine-,}web.xml -->
-                        <resource>
-                            <directory>${project.basedir}/src/main/webapp/WEB-INF</directory>
-                            <filtering>true</filtering>
-                            <targetPath>WEB-INF</targetPath>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-
 
             <!-- Documentation: https://dmp.fabric8.io/ -->
             <plugin>
@@ -157,7 +135,7 @@
                                         <arg>java</arg>
                                         <arg>-Djava.security.egd=file:/dev/./urandom</arg>
                                         <arg>-jar</arg>
-                                        <arg>/${project.build.finalName}.war</arg>
+                                        <arg>/${project.build.finalName}.jar</arg>
                                     </exec>
                                 </entryPoint>
                             </build>
