@@ -7,9 +7,16 @@ import 'package:time_client/client.dart';
 
 GraphQLClient? _gqlClient;
 
+bool _HomeWidgetIsSupported() {
+  if (kIsWeb) {
+    return false; // Not supported in the webversion
+  }
+  return (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android);
+}
+
 void initializeAppHomeWidget(GraphQLClient gqlClient) {
   _gqlClient = gqlClient;
-  if (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android) {
+  if (_HomeWidgetIsSupported()) {
     WidgetsFlutterBinding.ensureInitialized();
 
     // Set the group ID (Needed for iOS)
@@ -72,7 +79,7 @@ var f3 = NumberFormat("000", "en_US");
 var f4 = NumberFormat("0000", "en_US");
 
 void updateWidget(var payload) {
-  if (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android) {
+  if (_HomeWidgetIsSupported()) {
     if (payload != null) {
       int year = payload['year'];
       int month = payload['month'];
