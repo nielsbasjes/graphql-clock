@@ -7,7 +7,7 @@ DOCKER_PREFIX="docker.basjes.nl"
 
 echo "Build docker image for web for ${NAME}:${VERSION}"
 
-flutter build web --web-renderer canvaskit
+flutter build web
 
 docker build -t "${DOCKER_PREFIX}/${NAME}:${VERSION}" .
 docker tag "${DOCKER_PREFIX}/${NAME}:${VERSION}" "${DOCKER_PREFIX}/${NAME}:latest"

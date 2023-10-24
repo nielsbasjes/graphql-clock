@@ -1,11 +1,11 @@
 {
-    "name": "time_client",
-    "short_name": "time_client",
+    "name": "GraphQL subscription demo",
+    "short_name": "GraphQL clock",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A Flutter Graphql Experiment.",
+    "description": "A Flutter based Graphql subscription demo.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

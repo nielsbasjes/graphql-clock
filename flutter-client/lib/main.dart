@@ -23,12 +23,12 @@ class MyApp extends StatelessWidget {
     return GraphQLProvider(
         client: ValueNotifier(gqlClient),
         child: MaterialApp(
-          title: 'Flutter GraphQL Demo',
+          title: 'Flutter GraphQL subscription demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
             useMaterial3: true,
           ),
-          home: const MyHomePage(title: 'Flutter GraphQL Demo Home Page'),
+          home: const MyHomePage(title: 'Flutter GraphQL subscription demo'),
         ),
     );
   }
