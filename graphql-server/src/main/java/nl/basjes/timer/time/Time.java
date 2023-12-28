@@ -1,4 +1,4 @@
-package nl.basjes.timer;
+package nl.basjes.timer.time;
 
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -14,6 +14,7 @@ public record Time(
     Integer minute,
     Integer second,
     Integer millisecond,
+    Long epoch,
     String iso) {
 
     public Time(long epochMs) {
@@ -33,6 +34,7 @@ public record Time(
             zonedDateTime.getMinute(),
             zonedDateTime.getSecond(),
             zonedDateTime.getNano()/1_000_000,
+            zonedDateTime.toInstant().toEpochMilli(),
             DateTimeFormatter.ISO_DATE_TIME.format(zonedDateTime)
         );
     }

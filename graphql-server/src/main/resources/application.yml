@@ -15,8 +15,13 @@ spring:
       allowed-methods: 'GET,POST'
       max-age: '1800s'
 
-logging:
-  level:
-    root: INFO
-    graphql : INFO
-    notprivacysafe : OFF
+#logging:
+#  level:
+#    root: INFO
+#    graphql : TRACE
+#    notprivacysafe : OFF
+
+modbus:
+  physicalDevice:
+    # Every how many milliseconds must the system check if it needs to get new data from the physical devices.
+    pollInterval: 500

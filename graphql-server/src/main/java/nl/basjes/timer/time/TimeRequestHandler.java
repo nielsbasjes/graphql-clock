@@ -1,4 +1,4 @@
-package nl.basjes.timer;
+package nl.basjes.timer.time;
 
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.stream.Stream;
 
 @Controller
-public class GraphqlRequestHandler {
+public class TimeRequestHandler {
 
     @QueryMapping("now")
     public Time queryNow() {

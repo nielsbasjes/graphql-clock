@@ -1,28 +1,45 @@
+scalar Long
+
 type Query {
-    " Get the current timestamp "
+    "Get the current timestamp"
     now: Time
+
+    "Get the measurements. The optional `since` is the number of milliseconds back the stream should start. The optional `count` is the maximum number of records."
+    measurement(since: Long, count: Int): [Measurement]
 }
 
 type Subscription {
-    " Get the current timestamp (refreshed approximately every second) "
+    "Get the current timestamp (refreshed approximately every second)"
     now: Time
+
+    "Get the measurements as they occur."
+    measurement: Measurement
 }
 
 type Time {
-    " The current year "
+    "The current year"
     year: Int
-    " The current month number "
+    "The current month number"
     month: Int
-    " The current day of the month "
+    "The current day of the month"
     day: Int
-    " The current hour in UTC "
+    "The current hour in UTC"
     hour: Int
-    " The current minute in UTC "
+    "The current minute in UTC"
     minute: Int
-    " The current second in UTC "
+    "The current second in UTC"
     second: Int
-    " The current millisecond in UTC "
+    "The current millisecond in UTC"
     millisecond: Int
-    " The current date time as an ISO formatted string "
+    "The current date time as an ISO formatted timestamp"
     iso: String
+    "The current timestamp in epoch milliseconds"
+    epoch: Long
+}
+
+type Measurement {
+    "The measurement"
+    value: Float
+    "The timestamp when the measurement was created in epoch milliseconds"
+    epoch: Long
 }
