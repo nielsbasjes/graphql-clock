@@ -13,7 +13,7 @@ GraphQLClient getGraphQLCLient() {
     subProtocol: GraphQLProtocol.graphqlTransportWs,
     config: const SocketClientConfig(
       autoReconnect: true,
-      inactivityTimeout: Duration(seconds: 30),
+      inactivityTimeout: Duration(seconds: 10),
       // initialPayload: () => async {
       //   return {
       //     'headers': {'Authorization': _token},
