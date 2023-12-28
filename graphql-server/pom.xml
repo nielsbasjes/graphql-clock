@@ -132,8 +132,7 @@
                                 <maintainer>Niels Basjes</maintainer>
                                 <from>openjdk:17-slim</from>
                                 <tags>
-                                    <tag>latest</tag>
-                                    <tag>${project.version}</tag>
+                                    <tag>%l</tag>
                                 </tags>
 
                                 <labels>
@@ -180,6 +179,7 @@
                                     <color>yellow</color>
                                 </log>
                             </run>
+
                         </image>
 
                     </images>
@@ -198,7 +198,24 @@
                             <goal>build</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>deploy-docker</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
 
         </plugins>
